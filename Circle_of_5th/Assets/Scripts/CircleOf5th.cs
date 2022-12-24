@@ -338,7 +338,6 @@ public class CircleOf5th : MonoBehaviour
             GenerateKeySignature(flattoList, (int)quizMajFlatto);
         }
         ResultTextShow(false);
-        SwitchAccidental();
     }
 
     //問題を#系か♭系か決めるトグルから呼ばれる
