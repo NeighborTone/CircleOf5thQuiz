@@ -4682,6 +4682,7 @@ GameObject:
   - component: {fileID: 1929926560}
   - component: {fileID: 1929926559}
   - component: {fileID: 1929926558}
+  - component: {fileID: 1929926561}
   m_Layer: 5
   m_Name: MajInputField (TMP)
   m_TagString: Untagged
@@ -4758,7 +4759,7 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 9
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
@@ -4858,6 +4859,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929926556}
   m_CullTransparentMesh: 1
+--- !u!114 &1929926561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929926556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!1 &1934086592
 GameObject:
   m_ObjectHideFlags: 0
@@ -4968,6 +4982,7 @@ GameObject:
   - component: {fileID: 1993198174}
   - component: {fileID: 1993198173}
   - component: {fileID: 1993198172}
+  - component: {fileID: 1993198175}
   m_Layer: 5
   m_Name: MinInputField (TMP)
   m_TagString: Untagged
@@ -5144,6 +5159,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993198170}
   m_CullTransparentMesh: 1
+--- !u!114 &1993198175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993198170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!1 &2015803036
 GameObject:
   m_ObjectHideFlags: 0
