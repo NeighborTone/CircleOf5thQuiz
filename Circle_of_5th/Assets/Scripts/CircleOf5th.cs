@@ -47,7 +47,7 @@ public static class EnumCommon
             .OrderBy(c => mRandom.Next())
             .FirstOrDefault();
     }
-    
+
     /// <summary>
     /// 指定された列挙型の値の数返します
     /// </summary>
@@ -65,11 +65,11 @@ public class CircleOf5th : MonoBehaviour
     {
         Sharp,
         Flatto,
-        NONE
     }
 
     enum MajorKeySharp
     {
+        Invalid = -1,
         C = 0,
         G,
         D,
@@ -82,6 +82,7 @@ public class CircleOf5th : MonoBehaviour
 
     enum MinorKeySharp
     {
+        Invalid = -1,
         Am = 0,
         Em,
         Bm,
@@ -94,6 +95,7 @@ public class CircleOf5th : MonoBehaviour
 
     enum MajorKeyFlatto
     {
+        Invalid = -1,
         C = 0,
         F,
         B_f,
@@ -106,6 +108,7 @@ public class CircleOf5th : MonoBehaviour
 
     enum MinorKeyFlatto
     {
+        Invalid = -1,
         Am = 0,
         Dm,
         Gm,
@@ -132,16 +135,13 @@ public class CircleOf5th : MonoBehaviour
     [SerializeField] List<GameObject> flattoList = new(8);
     [SerializeField] GameObject sharpGroupObj = default;
     [SerializeField] GameObject flattoGroupObj = default;
-    [SerializeField] GameObject sharpDropGroupObj = default;
-    [SerializeField] GameObject flattoDropGroupObj = default;
-    [SerializeField] TMPro.TMP_Dropdown majSharpDrop = null;
-    [SerializeField] TMPro.TMP_Dropdown minSharpDrop = null;
-    [SerializeField] TMPro.TMP_Dropdown majFlattoDrop = null;
-    [SerializeField] TMPro.TMP_Dropdown minFlattoDrop = null;
+    [SerializeField] TMPro.TMP_InputField majInput = null;
+    [SerializeField] TMPro.TMP_InputField minInput = null;
     [SerializeField] Toggle accidentalToggle = default;
     [SerializeField] TMPro.TextMeshProUGUI accidentalToggleText = default;
     [SerializeField] TMPro.TextMeshProUGUI resultMajText = default;
     [SerializeField] TMPro.TextMeshProUGUI resultMinText = default;
+
 
     void ResultTextShow(bool enable)
     {
@@ -186,30 +186,30 @@ public class CircleOf5th : MonoBehaviour
     {
         switch (majFlatto)
         {
-            case MajorKeyFlatto.C:    minFlatto = MinorKeyFlatto.Am; break;
-            case MajorKeyFlatto.F:    minFlatto = MinorKeyFlatto.Dm; break;
-            case MajorKeyFlatto.B_f:  minFlatto = MinorKeyFlatto.Gm; break;
-            case MajorKeyFlatto.E_f:  minFlatto = MinorKeyFlatto.Cm; break;
-            case MajorKeyFlatto.A_f:  minFlatto = MinorKeyFlatto.Fm; break;
-            case MajorKeyFlatto.D_f:  minFlatto = MinorKeyFlatto.Bm_f; break;
-            case MajorKeyFlatto.G_f:  minFlatto = MinorKeyFlatto.Em_f; break;
-            case MajorKeyFlatto.C_f:  minFlatto = MinorKeyFlatto.Am_f; break;
+            case MajorKeyFlatto.C: minFlatto = MinorKeyFlatto.Am; break;
+            case MajorKeyFlatto.F: minFlatto = MinorKeyFlatto.Dm; break;
+            case MajorKeyFlatto.B_f: minFlatto = MinorKeyFlatto.Gm; break;
+            case MajorKeyFlatto.E_f: minFlatto = MinorKeyFlatto.Cm; break;
+            case MajorKeyFlatto.A_f: minFlatto = MinorKeyFlatto.Fm; break;
+            case MajorKeyFlatto.D_f: minFlatto = MinorKeyFlatto.Bm_f; break;
+            case MajorKeyFlatto.G_f: minFlatto = MinorKeyFlatto.Em_f; break;
+            case MajorKeyFlatto.C_f: minFlatto = MinorKeyFlatto.Am_f; break;
             default: minFlatto = MinorKeyFlatto.Am; break;
         }
     }
 
     void RelativeKey(MinorKeyFlatto minFlatto, out MajorKeyFlatto majFlatto)
-    {  
-        switch (minFlatto)  
-        {  
-            case MinorKeyFlatto.Am:    majFlatto = MajorKeyFlatto.C;   break;
-            case MinorKeyFlatto.Dm:    majFlatto = MajorKeyFlatto.F;   break;
-            case MinorKeyFlatto.Gm:    majFlatto = MajorKeyFlatto.B_f; break;
-            case MinorKeyFlatto.Cm:    majFlatto = MajorKeyFlatto.E_f; break;
-            case MinorKeyFlatto.Fm:    majFlatto = MajorKeyFlatto.A_f; break;
-            case MinorKeyFlatto.Bm_f:  majFlatto = MajorKeyFlatto.D_f; break;
-            case MinorKeyFlatto.Em_f:  majFlatto = MajorKeyFlatto.G_f; break;
-            case MinorKeyFlatto.Am_f:  majFlatto = MajorKeyFlatto.C_f; break;
+    {
+        switch (minFlatto)
+        {
+            case MinorKeyFlatto.Am: majFlatto = MajorKeyFlatto.C; break;
+            case MinorKeyFlatto.Dm: majFlatto = MajorKeyFlatto.F; break;
+            case MinorKeyFlatto.Gm: majFlatto = MajorKeyFlatto.B_f; break;
+            case MinorKeyFlatto.Cm: majFlatto = MajorKeyFlatto.E_f; break;
+            case MinorKeyFlatto.Fm: majFlatto = MajorKeyFlatto.A_f; break;
+            case MinorKeyFlatto.Bm_f: majFlatto = MajorKeyFlatto.D_f; break;
+            case MinorKeyFlatto.Em_f: majFlatto = MajorKeyFlatto.G_f; break;
+            case MinorKeyFlatto.Am_f: majFlatto = MajorKeyFlatto.C_f; break;
             default: majFlatto = MajorKeyFlatto.C; break;
         }
     }
@@ -218,7 +218,7 @@ public class CircleOf5th : MonoBehaviour
     void Start()
     {
         ResultTextShow(false);
-        GenerateQuizCallback();
+        GenerateQuiz();
     }
 
     //決定ボタンから呼ばれる
@@ -226,7 +226,7 @@ public class CircleOf5th : MonoBehaviour
     {
         if (currentAccidental == Accidental.Sharp)
         {
-            if(anserMajSharp == quizMajSharp)
+            if (anserMajSharp == quizMajSharp)
             {
                 resultMajText.text = "正解！";
             }
@@ -235,7 +235,7 @@ public class CircleOf5th : MonoBehaviour
                 resultMajText.text = "不正解！";
             }
 
-            if(anserMinSharp == quizMinSharp)
+            if (anserMinSharp == quizMinSharp)
             {
                 resultMinText.text = "正解！";
             }
@@ -270,43 +270,41 @@ public class CircleOf5th : MonoBehaviour
     //#系か♭系に応じて表示するオブジェクトを切り替える処理
     void SwitchAccidental()
     {
-        if(currentAccidental == Accidental.Sharp)
+        if (currentAccidental == Accidental.Sharp)
         {
             sharpGroupObj.SetActive(true);
-            sharpDropGroupObj.SetActive(true);
             flattoGroupObj.SetActive(false);
-            flattoDropGroupObj.SetActive(false);            
         }
         else
         {
             sharpGroupObj.SetActive(false);
-            sharpDropGroupObj.SetActive(false);
             flattoGroupObj.SetActive(true);
-            flattoDropGroupObj.SetActive(true);              
         }
     }
     //調号の作成
     void GenerateKeySignature(List<GameObject> list, int signNum)
     {
-        for(int i = 0; i < signNum; ++i)
+        for (int i = 0; i < signNum; ++i)
         {
             list[i].SetActive(true);
         }
     }
 
-    //クイズの作成処理
+    //クイズの作成処理。問題生成ボタンから呼ばれる
     void GenerateQuiz()
     {
+        majInput.text = "";
+        minInput.text = "";
         if (currentAccidental == Accidental.Sharp)
         {
             SwitchAccidental();
-            foreach(var s in sharpList)
+            foreach (var s in sharpList)
             {
                 s.SetActive(false);
             }
             var quiz = EnumCommon.Random<MajorKeySharp>();
             //同じ問題が連続しないようにする
-            if(quizMajSharp == quiz)
+            if (quizMajSharp == quiz)
             {
                 GenerateQuiz();
                 return;
@@ -327,7 +325,7 @@ public class CircleOf5th : MonoBehaviour
             }
             var quiz = EnumCommon.Random<MajorKeyFlatto>();
             //同じ問題が連続しないようにする
-            if(quizMajFlatto == quiz)
+            if (quizMajFlatto == quiz)
             {
                 GenerateQuiz();
                 return;
@@ -339,11 +337,6 @@ public class CircleOf5th : MonoBehaviour
             RelativeKey(quizMajFlatto, out quizMinFlatto);
             GenerateKeySignature(flattoList, (int)quizMajFlatto);
         }
-    }
-
-    //問題生成ボタンから呼ばれる
-    public void GenerateQuizCallback()
-    {
         ResultTextShow(false);
         SwitchAccidental();
     }
@@ -363,70 +356,76 @@ public class CircleOf5th : MonoBehaviour
         }
     }
 
-    // 以下ドロップダウンのオプションが変更されたときに実行するメソッド
-    public void ChangeMajorKey()
+    //以下回答処理
+    //インプットフィールドが確定されたときに実行するメソッド
+    public void EditEndMajorKey()
     {
-        if (currentAccidental == Accidental.Sharp)
+        switch (majInput.text)
         {
-            switch (majSharpDrop.value)
-            {
-                case 0: anserMajSharp = MajorKeySharp.C; break;
-                case 1: anserMajSharp = MajorKeySharp.G; break;
-                case 2: anserMajSharp = MajorKeySharp.D; break;
-                case 3: anserMajSharp = MajorKeySharp.A; break;
-                case 4: anserMajSharp = MajorKeySharp.E; break;
-                case 5: anserMajSharp = MajorKeySharp.B; break;
-                case 6: anserMajSharp = MajorKeySharp.F_s; break;
-                case 7: anserMajSharp = MajorKeySharp.C_s; break;
-            }
-        }
-        else
-        {
-            switch (majFlattoDrop.value)
-            {
-                case 0: anserMajFlatto = MajorKeyFlatto.C; break;
-                case 1: anserMajFlatto = MajorKeyFlatto.F; break;
-                case 2: anserMajFlatto = MajorKeyFlatto.B_f; break;
-                case 3: anserMajFlatto = MajorKeyFlatto.E_f; break;
-                case 4: anserMajFlatto = MajorKeyFlatto.A_f; break;
-                case 5: anserMajFlatto = MajorKeyFlatto.D_f; break;
-                case 6: anserMajFlatto = MajorKeyFlatto.G_f; break;
-                case 7: anserMajFlatto = MajorKeyFlatto.C_f; break;
-            }
+            case "A":  anserMajSharp = MajorKeySharp.A;       anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "B":  anserMajSharp = MajorKeySharp.B;       anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "C":  anserMajSharp = MajorKeySharp.C;       anserMajFlatto = MajorKeyFlatto.C; break;
+            case "D":  anserMajSharp = MajorKeySharp.D;       anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "E":  anserMajSharp = MajorKeySharp.E;       anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "F":  anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.F; break;
+            case "G":  anserMajSharp = MajorKeySharp.G;       anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "A#": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "B#": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "C#": anserMajSharp = MajorKeySharp.C_s;     anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "D#": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "E#": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "F#": anserMajSharp = MajorKeySharp.F_s;     anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "G#": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "Ab": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.A_f; break;
+            case "Bb": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.B_f; break;
+            case "Cb": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.C_f; break;
+            case "Db": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.D_f; break;
+            case "Eb": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.E_f; break;
+            case "Fb": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "Gb": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.G_f; break;
+            case "A♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.A_f; break;
+            case "B♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.B_f; break;
+            case "C♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.C_f; break;
+            case "D♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.D_f; break;
+            case "E♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.E_f; break;
+            case "F♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.Invalid; break;
+            case "G♭": anserMajSharp = MajorKeySharp.Invalid; anserMajFlatto = MajorKeyFlatto.G_f; break;
         }
     }
 
-    public void ChangeMinorKey()
+    public void EditEndMinorKey()
     {
-        if (currentAccidental == Accidental.Sharp)
+        switch (minInput.text)
         {
-            switch (minSharpDrop.value)
-            {
-                case 0: anserMinSharp = MinorKeySharp.Am; break;
-                case 1: anserMinSharp = MinorKeySharp.Em; break;
-                case 2: anserMinSharp = MinorKeySharp.Bm; break;
-                case 3: anserMinSharp = MinorKeySharp.Fm_s; break;
-                case 4: anserMinSharp = MinorKeySharp.Cm_s; break;
-                case 5: anserMinSharp = MinorKeySharp.Gm_s; break;
-                case 6: anserMinSharp = MinorKeySharp.Dm_s; break;
-                case 7: anserMinSharp = MinorKeySharp.Am_s; break;
-            }
-        }
-        else
-        {
-            switch (minFlattoDrop.value)
-            {
-                case 0: anserMinFlatto = MinorKeyFlatto.Am; break;
-                case 1: anserMinFlatto = MinorKeyFlatto.Dm; break;
-                case 2: anserMinFlatto = MinorKeyFlatto.Gm; break;
-                case 3: anserMinFlatto = MinorKeyFlatto.Cm; break;
-                case 4: anserMinFlatto = MinorKeyFlatto.Fm; break;
-                case 5: anserMinFlatto = MinorKeyFlatto.Bm_f; break;
-                case 6: anserMinFlatto = MinorKeyFlatto.Em_f; break;
-                case 7: anserMinFlatto = MinorKeyFlatto.Am_f; break;
-            }
+            case "A":  anserMinSharp = MinorKeySharp.Am;      anserMinFlatto = MinorKeyFlatto.Am; break;
+            case "B":  anserMinSharp = MinorKeySharp.Bm;      anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "C":  anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Cm; break;
+            case "D":  anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Dm; break;
+            case "E":  anserMinSharp = MinorKeySharp.Em;      anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "F":  anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Fm; break;
+            case "G":  anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Gm; break;
+            case "A#": anserMinSharp = MinorKeySharp.Am_s;    anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "B#": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "C#": anserMinSharp = MinorKeySharp.Cm_s;    anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "D#": anserMinSharp = MinorKeySharp.Dm_s;    anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "E#": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "F#": anserMinSharp = MinorKeySharp.Fm_s;    anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "G#": anserMinSharp = MinorKeySharp.Gm_s;    anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "Ab": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Am_f; break;
+            case "Bb": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Bm_f; break;
+            case "Cb": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "Db": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "Eb": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Em_f; break;
+            case "Fb": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "Gb": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "A♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Am_f; break;
+            case "B♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Bm_f; break;
+            case "C♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "D♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "E♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Em_f; break;
+            case "F♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
+            case "G♭": anserMinSharp = MinorKeySharp.Invalid; anserMinFlatto = MinorKeyFlatto.Invalid; break;
         }
     }
-    // 
-
+    //
 }
