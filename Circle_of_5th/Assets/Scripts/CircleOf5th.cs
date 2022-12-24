@@ -304,7 +304,17 @@ public class CircleOf5th : MonoBehaviour
             {
                 s.SetActive(false);
             }
-            quizMajSharp = EnumCommon.Random<MajorKeySharp>();
+            var quiz = EnumCommon.Random<MajorKeySharp>();
+            //同じ問題が連続しないようにする
+            if(quizMajSharp == quiz)
+            {
+                GenerateQuiz();
+                return;
+            }
+            else
+            {
+                quizMajSharp = quiz;
+            }
             RelativeKey(quizMajSharp, out quizMinSharp);
             GenerateKeySignature(sharpList, (int)quizMajSharp);
         }
@@ -315,7 +325,17 @@ public class CircleOf5th : MonoBehaviour
             {
                 f.SetActive(false);
             }
-            quizMajFlatto = EnumCommon.Random<MajorKeyFlatto>();
+            var quiz = EnumCommon.Random<MajorKeyFlatto>();
+            //同じ問題が連続しないようにする
+            if(quizMajFlatto == quiz)
+            {
+                GenerateQuiz();
+                return;
+            }
+            else
+            {
+                quizMajFlatto = quiz;
+            }
             RelativeKey(quizMajFlatto, out quizMinFlatto);
             GenerateKeySignature(flattoList, (int)quizMajFlatto);
         }
