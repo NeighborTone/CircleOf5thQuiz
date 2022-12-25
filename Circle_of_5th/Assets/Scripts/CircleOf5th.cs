@@ -40,11 +40,11 @@ public static class EnumCommon
     /// <summary>
     /// 指定された列挙型の値をランダムに返します
     /// </summary>
-    public static T Random<T>()
+    public static T Random<T>(int min, int max)
     {
         return Enum.GetValues(typeof(T))
             .Cast<T>()
-            .OrderBy(c => mRandom.Next())
+            .OrderBy(c => mRandom.Next(min, max))
             .FirstOrDefault();
     }
 
@@ -302,7 +302,7 @@ public class CircleOf5th : MonoBehaviour
             {
                 s.SetActive(false);
             }
-            var quiz = EnumCommon.Random<MajorKeySharp>();
+            var quiz = EnumCommon.Random<MajorKeySharp>((int)MajorKeySharp.C, (int)MajorKeySharp.C_s + 1);
             //同じ問題が連続しないようにする
             if (quizMajSharp == quiz)
             {
@@ -323,7 +323,7 @@ public class CircleOf5th : MonoBehaviour
             {
                 f.SetActive(false);
             }
-            var quiz = EnumCommon.Random<MajorKeyFlatto>();
+            var quiz = EnumCommon.Random<MajorKeyFlatto>((int)MajorKeyFlatto.C, (int)MajorKeyFlatto.C_f + 1);
             //同じ問題が連続しないようにする
             if (quizMajFlatto == quiz)
             {
