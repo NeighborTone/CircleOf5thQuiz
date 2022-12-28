@@ -121,15 +121,15 @@ public class CircleOf5th : MonoBehaviour
 
     [SerializeField, ReadOnly] Accidental currentAccidental = Accidental.Sharp;  //現在の問題が#系か♭系か
     //回答用
-    [SerializeField, ReadOnly] MajorKeySharp anserMajSharp = default;
-    [SerializeField, ReadOnly] MajorKeyFlatto anserMajFlatto = default;
-    [SerializeField, ReadOnly] MinorKeySharp anserMinSharp = default;
-    [SerializeField, ReadOnly] MinorKeyFlatto anserMinFlatto = default;
+    [SerializeField, ReadOnly] MajorKeySharp anserMajSharp = MajorKeySharp.Invalid;
+    [SerializeField, ReadOnly] MajorKeyFlatto anserMajFlatto = MajorKeyFlatto.Invalid;
+    [SerializeField, ReadOnly] MinorKeySharp anserMinSharp = MinorKeySharp.Invalid;
+    [SerializeField, ReadOnly] MinorKeyFlatto anserMinFlatto = MinorKeyFlatto.Invalid;
     //問題用
-    [SerializeField, ReadOnly] MajorKeySharp quizMajSharp = default;
-    [SerializeField, ReadOnly] MajorKeyFlatto quizMajFlatto = default;
-    [SerializeField, ReadOnly] MinorKeySharp quizMinSharp = default;
-    [SerializeField, ReadOnly] MinorKeyFlatto quizMinFlatto = default;
+    [SerializeField, ReadOnly] MajorKeySharp quizMajSharp = MajorKeySharp.Invalid;
+    [SerializeField, ReadOnly] MajorKeyFlatto quizMajFlatto = MajorKeyFlatto.Invalid;
+    [SerializeField, ReadOnly] MinorKeySharp quizMinSharp = MinorKeySharp.Invalid;
+    [SerializeField, ReadOnly] MinorKeyFlatto quizMinFlatto = MinorKeyFlatto.Invalid;
 
     [SerializeField] List<GameObject> sharpList = new(8);
     [SerializeField] List<GameObject> flattoList = new(8);
@@ -221,11 +221,26 @@ public class CircleOf5th : MonoBehaviour
         GenerateQuiz();
     }
 
+    private void CheckInvalid()
+    {
+        if (majInput.text == "")
+        {
+            resultMajText.text = "不正解！";
+        }
+
+        if (minInput.text == "")
+        {
+            resultMinText.text = "不正解！";
+        }
+    }
+
     //決定ボタンから呼ばれる
     public void Anser()
     {
+
         if (currentAccidental == Accidental.Sharp)
         {
+
             if (anserMajSharp == quizMajSharp)
             {
                 resultMajText.text = "正解！";
@@ -264,6 +279,7 @@ public class CircleOf5th : MonoBehaviour
                 resultMinText.text = "不正解！";
             }
         }
+        CheckInvalid();
         ResultTextShow(true);
     }
 
